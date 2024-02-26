@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Table</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+
+    .table-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #edf2f7;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tr:hover {
+      background-color: #e2e8f0;
+    }
+  </style>
+  <script>
+    const cell = (value, isHead) => {
+      return $(isHead ? '<th/>' : '<td/>').addClass("text-gray-800").text(value);
+    };
+    
+    const row = (values, isHead) => {
+      return $('<tr/>').append(values.map(value => cell(value, isHead)));
+    };
+    
+    const createTable = (data) => {
+      const table = $('<table/>');
+      table.append(row(["Title", "Price", "Brand"], true));
+      Object.values(data).slice(0, 10).forEach(asset => {
+        table.append(row([asset.title, asset.price, asset.brand]));
+      });
+      return table;
+    };
+    
+    $(document).ready(function () {
+      fetch("https://dummyjson.com/products")
+        .then((response) => response.json())
+        .then((data) => {
+          const tb = createTable(data.products);
+          $('#productTable').append(tb);
+        });
+    });
+  </script>
+</head>
+<body class="bg-gray-200">
+  <div class="flex justify-center items-center h-screen">
+    <div class="table-container bg-white shadow-md rounded-lg p-6">
+      <h1 class="text-3xl font-semibold mb-4">Product Table</h1>
+      <div id="productTable" class="overflow-x-auto">
+        <!-- Table will be appended here -->
+      </div>
+    </div>
+  </div>
+  <script>
+    // custom config for the MTW app 
+    const mtwAppConfig = {
+        border: true // app border in the MTW page                    
+    }
+
+    ///////////////////////////////////////////////////////
+    // implement this functions in order to use private API        
+    const sendPrivateApiRequest = async () => {
+        // your code here:
+        // sendRequestToParent({ cat: 'getAssets' })
+    }        
+
+    const acceptPrivateApiResponse = async (data) => {
+        // process received data here:
+        // console.log(data)
+    }
+
+    // use this in order to send on document load
+    document.addEventListener('DOMContentLoaded', () => {
+        // your code here:
+        //sendRequestToParent({ method: 'getAssets' })
+    })
+
+</script>
+<script src="https://morethanwallet.com/appstore/index.js"></script>
+</body>
+</html>
